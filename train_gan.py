@@ -8,7 +8,7 @@ import pandas as pd
 
 CSV = "data/stateless_features-light_image.pcap.csv"
 BATCH = 256
-EPOCHS = 50
+EPOCHS = 20
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # --- data prep -----------------------------------------------------------
