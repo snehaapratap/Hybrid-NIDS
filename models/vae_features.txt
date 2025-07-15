@@ -1,0 +1,12 @@
+FQDN_count
+subdomain_length
+upper
+lower
+numeric
+entropy
+special
+labels
+labels_max
+labels_average
+len
+subdomain
