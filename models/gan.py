@@ -2,35 +2,35 @@
 import torch
 import torch.nn as nn
 
-LATENT = 100       # z‑dim
-N_FEATS = 42       # ← set to feature count
-N_CLASSES = 1      # only "normal" class + 1 fake label in semi‑sup
-
-class Gen(nn.Module):
-    def __init__(self):
+class Generator(nn.Module):
+    def __init__(self, latent_dim: int, n_feats: int):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(LATENT, 128),
+            nn.Linear(latent_dim, 256),
             nn.ReLU(),
-            nn.Linear(128, N_FEATS),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, n_feats),
         )
     def forward(self, z): return self.net(z)
 
-class Disc(nn.Module):
+class Discriminator(nn.Module):
     """
-    Disc has two heads:
-      • out_adv  – real/fake (W‑GAN style or BCE)
-      • out_cls  – semi‑sup normal‑class probability
+    Semi‑supervised: two heads
+      • adv – real / fake (sigmoid/BCE)
+      • cls – normal / unknown   (Softmax over 1 real class)
     """
-    def __init__(self):
+    def __init__(self, n_feats: int, n_classes: int = 1):
         super().__init__()
         self.body = nn.Sequential(
-            nn.Linear(N_FEATS, 128),
+            nn.Linear(n_feats, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
             nn.ReLU(),
         )
-        self.out_adv = nn.Linear(128, 1)
-        self.out_cls = nn.Linear(128, N_CLASSES)
+        self.adv = nn.Linear(64, 1)
+        self.cls = nn.Linear(64, n_classes)
 
     def forward(self, x):
         h = self.body(x)
-        return self.out_adv(h), self.out_cls(h)
+        return self.adv(h), self.cls(h)

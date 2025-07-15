@@ -3,7 +3,7 @@
 
 # In[6]:
 
-
+import os
 import pandas as pd
 import numpy as np
 import tensorflow as tf
@@ -257,6 +257,18 @@ print(f"Overall Accuracy:  {accuracy_score(y_fake_true, y_pred_anomaly_final):.4
 
 
 # In[ ]:
+
+os.makedirs("models", exist_ok=True)
+
+# Save full model (recommended for Keras 3)
+vae_final.save("models/vae_final.keras")
+
+# Save only weights with correct filename format
+vae_final.save_weights("models/vae_final.weights.h5")
+
+print("✅ Model successfully saved in 'models/' folder:")
+print("- Full model: models/vae_final.keras")
+print("- Weights only: models/vae_final.weights.h5")
 
 
 
