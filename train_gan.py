@@ -16,14 +16,14 @@ from sklearn.preprocessing import StandardScaler
 from utils.dataset import FlowDataset
 from models.gan import Generator, Discriminator
 
-CSV_PATH = "data/combined_dataset.csv"
+CSV_PATH = "data/IoT_Intrusion.csv"
 NORMAL_LABELS = [
     "audio", "image", "text", "video", "compressed", "exe",
     # add / remove as you decide what is benign
 ]
 LATENT_DIM = 100
 BATCH = 256
-EPOCHS = 40
+EPOCHS = 20
 LR = 2e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -107,12 +107,12 @@ for epoch in range(1, EPOCHS + 1):
 # --------------------------------------------------------------------
 # 5)  Save weights
 # --------------------------------------------------------------------
+torch.save(G.state_dict(), "models/gan_generator.pt")
+torch.save(D.state_dict(), "models/gan_discriminator.pt")
 torch.save({
-    "gen":  G.state_dict(),
-    "disc": D.state_dict(),
     "scaler_mean": scaler.mean_,
     "scaler_scale": scaler.scale_,
     "numeric_cols": numeric_cols,
-}, "models/ss_gan_dns.pth")
+}, "models/gan_scaler.pth")
 
-print("✅  Semi‑Supervised GAN trained and saved to models/ss_gan_dns.pth")
+print("✅  Semi‑Supervised GAN trained and saved to models/gan_generator.pt, models/gan_discriminator.pt, and models/gan_scaler.pth")

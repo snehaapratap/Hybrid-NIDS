@@ -1,1 +1,3 @@
 torch
+streamlit
+scikit-learn
