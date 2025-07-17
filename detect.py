@@ -8,7 +8,7 @@ from models.gan import Discriminator
 from models.vae import VAE_PT
 
 # --- Config --------------------------------------------------
-CSV_PATH = "data/combined_dataset.csv"
+CSV_PATH = "data/IoT_Intrusion.csv"
 GAN_DISC_PATH = "models/gan_discriminator.pt"
 GAN_SCALER_PATH = "models/gan_scaler.pth"
 VAE_PATH = "models/vae_final.pt"
@@ -20,7 +20,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 df = pd.read_csv(CSV_PATH)
 
 # Load GAN scaler info
-gan_scaler = torch.load(GAN_SCALER_PATH)
+gan_scaler = torch.load(GAN_SCALER_PATH, weights_only=False)
 numeric_cols = gan_scaler["numeric_cols"]
 scaler = StandardScaler()
 scaler.mean_ = gan_scaler["scaler_mean"]
