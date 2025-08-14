@@ -1,0 +1,5 @@
+mode = st.sidebar.radio("Select input mode:", ["CSV Upload", "Manual Input"])
+=======
+
+st.sidebar.header("Step 1: Choose Input Mode")
+mode = st.sidebar.radio("Select input mode:", ["CSV Upload", "Manual Input", "Train GAN Model"])
